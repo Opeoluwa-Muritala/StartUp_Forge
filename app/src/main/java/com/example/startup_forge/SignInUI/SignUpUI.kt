@@ -1,0 +1,135 @@
+package com.example.startup_forge.SignInUI
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowDropDown
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.startup_forge.Components.AgreeToTerms
+import com.example.startup_forge.Components.ButtonState
+import com.example.startup_forge.Components.FadingButton
+import com.example.startup_forge.Components.HeaderText
+import com.example.startup_forge.Components.MiddleSlot
+import com.example.startup_forge.Components.OtherOption
+import com.example.startup_forge.Components.SignWithGoogle
+import com.example.startup_forge.Components.textField
+import com.example.startup_forge.Components.textFieldWithIcon
+import com.example.startup_forge.R
+
+@Composable
+fun SignUpUI() {
+    val email = remember {
+        mutableStateOf("")
+    }
+    val password = remember {
+        mutableStateOf("")
+    }
+    val confirmpassword = remember {
+        mutableStateOf("")
+    }
+    var showIcon by remember {
+        mutableStateOf(false)
+    }
+    var loading by remember {
+        mutableStateOf(false)
+    }
+    Column(
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .background(Color.White)
+            .fillMaxSize()
+            .padding(top = 30.dp)
+    ) {
+
+        Column(
+            modifier = Modifier
+                .width(327.dp)
+                .height(570.dp),
+            verticalArrangement = Arrangement.spacedBy(40.dp, Alignment.Top),
+            horizontalAlignment = Alignment.Start,
+        ) {
+            HeaderText(text = "Create Account")
+            Column(
+                verticalArrangement = Arrangement.spacedBy(15.dp, Alignment.Top),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                textField(textFieldState = email, textfieldLabel = "Email")
+                textFieldWithIcon(
+                    textFieldState = password, textfieldLabel = "Password", icons = listOf(
+                        R.drawable.eyeopened,
+                        R.drawable.eyeclosed
+                    ), showIcon = showIcon
+                ) {
+                    showIcon = !showIcon
+                }
+                textFieldWithIcon(
+                    textFieldState = confirmpassword, textfieldLabel = "Confirm Password", icons = listOf(
+                        R.drawable.eyeopened,
+                        R.drawable.eyeclosed
+                    ), showIcon = showIcon
+                ) {
+                    showIcon = !showIcon
+                }
+                AgreeToTerms()
+                MiddleSlot()
+
+                    SignWithGoogle(SignInClick = { /*TODO*/ },)
+                Column(
+                    modifier = Modifier
+                        .width(260.dp)
+                        .height(IntrinsicSize.Max),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    if (!loading) {
+                        FadingButton(
+                            buttonState = ButtonState(
+                                "Sign Up",
+                                password.value != "" && email.value != "",
+                            )
+                        ) {
+                            loading = true
+                        }
+                    } else {
+                        CircularProgressIndicator(
+                            color = Color.Magenta,
+                            strokeWidth = 5.dp,
+                            trackColor = Color.LightGray,
+                            strokeCap = StrokeCap.Butt
+                        )
+                    }
+                    OtherOption(text = "Sign in") {
+                        
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun SignUp(){
+    SignUpUI()
+}
