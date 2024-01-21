@@ -1,5 +1,11 @@
 package com.example.startup_forge
 
-data class NavRoute(val route: String){
+sealed class MainRoute(val route: String){
+    object SignUp : MainRoute("sign_up")
+    object SignIn : MainRoute("sign_in")
+    object BussinesInfo : MainRoute("more_info")
+    object MainApp : MainRoute("sign_up")
+
+
 
 }

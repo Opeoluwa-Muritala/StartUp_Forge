@@ -4,18 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowDropDown
-import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,19 +21,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.startup_forge.Components.AgreeToTerms
-import com.example.startup_forge.Components.ButtonState
-import com.example.startup_forge.Components.FadingButton
-import com.example.startup_forge.Components.HeaderText
-import com.example.startup_forge.Components.MiddleSlot
-import com.example.startup_forge.Components.OtherOption
-import com.example.startup_forge.Components.SignWithGoogle
-import com.example.startup_forge.Components.textField
-import com.example.startup_forge.Components.textFieldWithIcon
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.startup_forge.MainRoute
+import com.example.startup_forge.UIComponents.AgreeToTerms
+import com.example.startup_forge.UIComponents.ButtonState
+import com.example.startup_forge.UIComponents.FadingButton
+import com.example.startup_forge.UIComponents.HeaderText
+import com.example.startup_forge.UIComponents.MiddleSlot
+import com.example.startup_forge.UIComponents.OtherOption
+import com.example.startup_forge.UIComponents.SignWithGoogle
+import com.example.startup_forge.UIComponents.textField
+import com.example.startup_forge.UIComponents.textFieldWithIcon
 import com.example.startup_forge.R
+import kotlinx.coroutines.delay
 
 @Composable
-fun SignUpUI() {
+fun SignUpUI(navController: NavController) {
     val email = remember {
         mutableStateOf("")
     }
@@ -95,7 +94,11 @@ fun SignUpUI() {
                 AgreeToTerms()
                 MiddleSlot()
 
-                    SignWithGoogle(SignInClick = { /*TODO*/ },)
+                    SignWithGoogle(
+                        SignInClick = {
+                            navController.navigate(MainRoute.BussinesInfo.route)
+                        },
+                    )
                 Column(
                     modifier = Modifier
                         .width(260.dp)
@@ -112,6 +115,10 @@ fun SignUpUI() {
                             loading = true
                         }
                     } else {
+                        LaunchedEffect(key1 = loading, ){
+                            delay(3000)
+                            navController.navigate(MainRoute.SignIn.route)
+                        }
                         CircularProgressIndicator(
                             color = Color.Magenta,
                             strokeWidth = 5.dp,
@@ -131,5 +138,5 @@ fun SignUpUI() {
 @Preview
 @Composable
 fun SignUp(){
-    SignUpUI()
+    SignUpUI(rememberNavController())
 }

@@ -1,4 +1,4 @@
-package com.example.startup_forge.Components
+package com.example.startup_forge.UIComponents
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
@@ -133,13 +134,14 @@ fun ForgotAndRememberPassword(
                 checkedColor = Color(0xFFFF5722),
                 uncheckedColor = Color.LightGray,
                 checkmarkColor = Color.White,
-            )
+            ),
+            modifier = Modifier.size(20.dp)
         )
         Spacer(modifier = Modifier.width(2.dp))
         Text(
             text = "Remember Password",
             style = TextStyle(
-                fontSize = 14.sp,
+                fontSize = 10.sp,
                 lineHeight = 21.sp,
                 fontWeight = FontWeight(500),
                 color = Color(0xFF000000),
@@ -151,7 +153,7 @@ fun ForgotAndRememberPassword(
         Text(
             text = text,
             style = TextStyle(
-                fontSize = 14.sp,
+                fontSize = 10.sp,
                 lineHeight = 21.sp,
                 fontWeight = FontWeight(500),
                 color = Color(0xFFFF5722),
