@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.example.startup_forge.ui.theme.ThemeOrange
 
 @Composable
 fun HeaderText(
@@ -17,7 +18,7 @@ fun HeaderText(
         style = TextStyle(
             fontSize = 24.sp,
             fontWeight = FontWeight(700),
-            color = Color(0xFFFF5722),
+            color = ThemeOrange,
 
             )
     )

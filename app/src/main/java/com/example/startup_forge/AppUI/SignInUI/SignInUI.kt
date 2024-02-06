@@ -1,4 +1,4 @@
-package com.example.startup_forge.SignInUI
+package com.example.startup_forge.AppUI.SignInUI
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -86,7 +86,8 @@ fun SignInUI(navController: NavController) {
                 ){}
                 MiddleSlot()
 
-                SignWithGoogle(SignInClick = {                             navController.navigate(MainRoute.BussinesInfo.route)
+                SignWithGoogle(SignInClick = {
+                    navController.navigate(MainRoute.BussinesInfo.route)
                     navController.navigate(MainRoute.BussinesInfo.route)
                 },)
                 Column(

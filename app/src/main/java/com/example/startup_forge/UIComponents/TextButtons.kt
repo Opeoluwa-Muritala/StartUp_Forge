@@ -26,6 +26,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.startup_forge.ui.theme.TextBlack
+import com.example.startup_forge.ui.theme.ThemeOrange
 
 @Composable
 fun AgreeToTerms() {
@@ -144,7 +146,7 @@ fun ForgotAndRememberPassword(
                 fontSize = 10.sp,
                 lineHeight = 21.sp,
                 fontWeight = FontWeight(500),
-                color = Color(0xFF000000),
+                color = TextBlack,
                 textAlign = TextAlign.Center,
             )
         )
@@ -156,7 +158,7 @@ fun ForgotAndRememberPassword(
                 fontSize = 10.sp,
                 lineHeight = 21.sp,
                 fontWeight = FontWeight(500),
-                color = Color(0xFFFF5722),
+                color = ThemeOrange,
                 textAlign = TextAlign.Center,
             ),
             modifier = Modifier.clickable {

@@ -18,6 +18,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.startup_forge.ui.theme.TextGray
+import com.example.startup_forge.ui.theme.ThemeOrange
 
 @Composable
 fun FadingButton(
@@ -37,7 +39,7 @@ fun FadingButton(
         modifier = Modifier
             .width(260.dp)
             .height(51.dp)
-            .background(color = Color(0xFFFFA68A).copy(alpha), shape = RoundedCornerShape(size = 8.dp))
+            .background(color = ThemeOrange.copy(alpha), shape = RoundedCornerShape(size = 8.dp))
             .padding(start = 32.dp, top = 16.dp, end = 32.dp, bottom = 16.dp)
             .clickable { onFadingButtonClick() }
     ) {
@@ -46,7 +48,7 @@ fun FadingButton(
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight(500),
-                    color = Color(0xFFF5F5F5),
+                    color = TextGray,
                 ),
             )
 

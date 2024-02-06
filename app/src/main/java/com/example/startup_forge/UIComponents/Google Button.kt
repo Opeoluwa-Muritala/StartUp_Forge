@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.startup_forge.R
+import com.example.startup_forge.ui.theme.BorderColor
 
 @Composable
 fun SignWithGoogle(
@@ -30,7 +31,7 @@ fun SignWithGoogle(
     Row(
         modifier = Modifier
             .border(width = 1.dp,
-                color = Color(0xFF333333),
+                color = BorderColor,
                 shape = RoundedCornerShape(size = 8.dp))
         .width(327.dp)
         .height(56.dp)

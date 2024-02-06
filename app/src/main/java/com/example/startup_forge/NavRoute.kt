@@ -5,7 +5,11 @@ sealed class MainRoute(val route: String){
     object SignIn : MainRoute("sign_in")
     object BussinesInfo : MainRoute("more_info")
     object MainApp : MainRoute("sign_up")
+}
 
-
-
+sealed class AppRoute(val route: String){
+    object Home: AppRoute("home")
+    object Mentor: AppRoute("mentor")
+    object Community: AppRoute("community")
+    object Booking: AppRoute("booking")
 }
