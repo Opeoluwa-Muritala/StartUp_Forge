@@ -40,8 +40,8 @@ fun FadingButton(
             .width(260.dp)
             .height(51.dp)
             .background(color = ThemeOrange.copy(alpha), shape = RoundedCornerShape(size = 8.dp))
-            .padding(start = 32.dp, top = 16.dp, end = 32.dp, bottom = 16.dp)
-            .clickable { onFadingButtonClick() }
+            .padding(start = 32.dp, top = 16.dp, end = 32.dp, bottom = 10.dp)
+            .clickable { if (buttonState.show) onFadingButtonClick() }
     ) {
             Text(
                 text = buttonState.text,

@@ -10,11 +10,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.example.startup_forge.AppRoute
 import com.example.startup_forge.ui.theme.TextGray
@@ -24,18 +28,36 @@ fun Community() {
     Column(
         Modifier
             .fillMaxSize()
-            .background(TextGray)
+            .background(TextGray),
+        horizontalAlignment = Alignment.Start
     ) {
         Box(modifier = Modifier
             .fillMaxHeight()
-            .width(400.dp)
+            .width(100.dp)
             .background(Color.White)){
             Column(
                 Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Box(modifier = Modifier.clip(CircleShape).background(TextGray).size(80.dp))
+                Box(modifier = Modifier
+                    .clip(CircleShape)
+                    .background(TextGray)
+                    .size(60.dp))
+                Box(modifier = Modifier
+                    .clip(CircleShape)
+                    .background(TextGray)
+                    .size(60.dp))
+                Box(modifier = Modifier
+                    .clip(CircleShape)
+                    .background(TextGray)
+                    .size(60.dp)){
+                    Icon(
+                        imageVector = Icons.Outlined.Add,
+                        contentDescription = "Addition",
+                        modifier = Modifier.size(50.dp)
+                    )
+                }
             }
         }
     }

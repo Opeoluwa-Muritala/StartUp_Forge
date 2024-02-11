@@ -11,10 +11,10 @@ data class BottomNavItem(
 )
     fun BottomNavItems(): List<BottomNavItem>{
         return listOf(
-            BottomNavItem("Home", R.drawable.ic_launcher_foreground, AppRoute.Home.route),
+            BottomNavItem("Home", R.drawable.eyeopened, AppRoute.Home.route),
             BottomNavItem("Mentor", R.drawable.eyeclosed, AppRoute.Mentor.route),
             BottomNavItem("Community", R.drawable.eyeopened , AppRoute.Community.route),
-            BottomNavItem("Booking", R.drawable.ic_launcher_background, AppRoute.Booking.route),
+            BottomNavItem("Booking", R.drawable.eyeclosed, AppRoute.Booking.route),
         )
     }
 

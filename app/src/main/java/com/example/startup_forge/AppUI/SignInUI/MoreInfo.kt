@@ -26,23 +26,20 @@ import com.example.startup_forge.UIComponents.ButtonState
 import com.example.startup_forge.UIComponents.FadingButton
 import com.example.startup_forge.UIComponents.HeaderText
 import com.example.startup_forge.UIComponents.textField
+import com.example.startup_forge.ViewModels.PasswordIconViewModel
+import com.example.startup_forge.ViewModels.TextFieldViewModel
 
 @Composable
 fun BussinessInfo(navController:NavController) {
+
+    val textfield = remember {
+        TextFieldViewModel()
+    }
+    var showIcon = remember {
+        PasswordIconViewModel().myData
+    }
     var loading by remember {
         mutableStateOf(false)
-    }
-    val name = remember {
-        mutableStateOf("")
-    }
-    val location = remember {
-        mutableStateOf("")
-    }
-    val about = remember {
-        mutableStateOf("")
-    }
-    val industry = remember {
-        mutableStateOf("")
     }
 
     Column(
@@ -51,7 +48,7 @@ fun BussinessInfo(navController:NavController) {
         modifier = Modifier
             .background(Color.White)
             .fillMaxSize()
-            .padding(top = 30.dp)
+            .padding(top = 10.dp)
     ) {
 
         Column(
@@ -62,10 +59,10 @@ fun BussinessInfo(navController:NavController) {
             horizontalAlignment = Alignment.Start,
         ) {
             HeaderText(text = "Let's Know You!")
-            textField(textFieldState = name, textfieldLabel = "Bussiness Name")
-            textField(textFieldState = industry, textfieldLabel = "Industry")
-            textField(textFieldState = about, textfieldLabel = "About")
-            textField(textFieldState = location, textfieldLabel = "Location")
+            textField(textFieldState = textfield.myData, textfieldLabel = "Bussiness Name")
+            textField(textFieldState = textfield.myData, textfieldLabel = "Industry")
+            textField(textFieldState = textfield.myData, textfieldLabel = "About")
+            textField(textFieldState = textfield.myData, textfieldLabel = "Location")
 
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -75,7 +72,7 @@ fun BussinessInfo(navController:NavController) {
             FadingButton(
                 buttonState = ButtonState(
                     "Sign In",
-                    name.value != "" && industry.value != "" && about.value != ""&& location.value != "",
+                    textfield.myData != "",
                 )
             ) {
                 loading = true

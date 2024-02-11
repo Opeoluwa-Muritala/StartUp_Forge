@@ -34,22 +34,22 @@ import com.example.startup_forge.UIComponents.SignWithGoogle
 import com.example.startup_forge.UIComponents.textField
 import com.example.startup_forge.UIComponents.textFieldWithIcon
 import com.example.startup_forge.R
+import com.example.startup_forge.ViewModels.PasswordIconViewModel
+import com.example.startup_forge.ViewModels.TextFieldViewModel
 import kotlinx.coroutines.delay
 
 @Composable
 fun SignInUI(navController: NavController) {
-    val email = remember {
-        mutableStateOf("")
+    val textfield = remember {
+        TextFieldViewModel()
     }
-    val password = remember {
-        mutableStateOf("")
-    }
-    var showIcon by remember {
-        mutableStateOf(false)
+    var showIcon = remember {
+        PasswordIconViewModel().myData
     }
     var loading by remember {
         mutableStateOf(false)
     }
+
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -71,9 +71,10 @@ fun SignInUI(navController: NavController) {
                 verticalArrangement = Arrangement.spacedBy(15.dp, Alignment.Top),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                textField(textFieldState = email, textfieldLabel = "Email")
+                textField(textFieldState =textfield.myData , textfieldLabel = "Email")
+
                 textFieldWithIcon(
-                    textFieldState = password, textfieldLabel = "Password", icons = listOf(
+                    textFieldState = textfield.myData, textfieldLabel = "Password", icons = listOf(
                         R.drawable.eyeopened,
                         R.drawable.eyeclosed
                     ), showIcon = showIcon
@@ -100,7 +101,7 @@ fun SignInUI(navController: NavController) {
                         FadingButton(
                             buttonState = ButtonState(
                                 "Sign In",
-                                password.value != "" && email.value != "",
+                                textfield.myData != "",
                             )
                         ) {
                             loading = true

@@ -34,21 +34,17 @@ import com.example.startup_forge.UIComponents.SignWithGoogle
 import com.example.startup_forge.UIComponents.textField
 import com.example.startup_forge.UIComponents.textFieldWithIcon
 import com.example.startup_forge.R
+import com.example.startup_forge.ViewModels.PasswordIconViewModel
+import com.example.startup_forge.ViewModels.TextFieldViewModel
 import kotlinx.coroutines.delay
 
 @Composable
 fun SignUpUI(navController: NavController) {
-    val email = remember {
-        mutableStateOf("")
+    val textfield = remember {
+        TextFieldViewModel()
     }
-    val password = remember {
-        mutableStateOf("")
-    }
-    val confirmpassword = remember {
-        mutableStateOf("")
-    }
-    var showIcon by remember {
-        mutableStateOf(false)
+    var showIcon = remember {
+        PasswordIconViewModel().myData
     }
     var loading by remember {
         mutableStateOf(false)
@@ -74,9 +70,9 @@ fun SignUpUI(navController: NavController) {
                 verticalArrangement = Arrangement.spacedBy(15.dp, Alignment.Top),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                textField(textFieldState = email, textfieldLabel = "Email")
+                textField(textFieldState = textfield.myData, textfieldLabel = "Email")
                 textFieldWithIcon(
-                    textFieldState = password, textfieldLabel = "Password", icons = listOf(
+                    textFieldState = textfield.myData, textfieldLabel = "Password", icons = listOf(
                         R.drawable.eyeopened,
                         R.drawable.eyeclosed
                     ), showIcon = showIcon
@@ -84,7 +80,7 @@ fun SignUpUI(navController: NavController) {
                     showIcon = !showIcon
                 }
                 textFieldWithIcon(
-                    textFieldState = confirmpassword, textfieldLabel = "Confirm Password", icons = listOf(
+                    textFieldState = textfield.myData, textfieldLabel = "Confirm Password", icons = listOf(
                         R.drawable.eyeopened,
                         R.drawable.eyeclosed
                     ), showIcon = showIcon
@@ -109,7 +105,7 @@ fun SignUpUI(navController: NavController) {
                         FadingButton(
                             buttonState = ButtonState(
                                 "Sign Up",
-                                password.value != "" && email.value != "",
+                                textfield.myData != "",
                             )
                         ) {
                             loading = true
@@ -127,7 +123,7 @@ fun SignUpUI(navController: NavController) {
                         )
                     }
                     OtherOption(text = "Sign in") {
-                        
+                        navController.navigate(MainRoute.SignIn.route)
                     }
                 }
             }

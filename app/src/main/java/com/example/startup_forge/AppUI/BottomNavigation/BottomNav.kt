@@ -9,7 +9,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -18,19 +17,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.startup_forge.MainRoute
-import com.example.startup_forge.ui.theme.PurpleGrey40
 import com.example.startup_forge.ui.theme.TextBlack
-import com.example.startup_forge.ui.theme.TextGray
 import com.example.startup_forge.ui.theme.ThemeOrange
 
 @Composable
 fun BottomMenu(navController: NavController){
     var selectedItemIndex by remember {
-        mutableIntStateOf(0)
+        mutableIntStateOf(2)
     }
 
-    NavigationBar {
+    NavigationBar(
+        containerColor = Color.White,
+        contentColor = Color.Transparent
+    ) {
         BottomNavItems().forEachIndexed { index, bottomNavItem ->
             NavigationBarItem(
                 selected = index == selectedItemIndex,
@@ -54,8 +53,9 @@ fun BottomMenu(navController: NavController){
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor= ThemeOrange,
                     selectedTextColor= ThemeOrange,
-                    unselectedIconColor= TextGray,
-                    unselectedTextColor= TextBlack
+                    unselectedIconColor= Color.DarkGray,
+                    unselectedTextColor= TextBlack,
+                    indicatorColor = Color.Transparent
                 )
             )
 

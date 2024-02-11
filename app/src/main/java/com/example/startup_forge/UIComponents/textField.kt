@@ -2,6 +2,7 @@ package com.example.startup_forge.UIComponents
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,8 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -21,11 +22,11 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun textField(
-    textFieldState: MutableState<String>,
+    textFieldState: String,
     textfieldLabel: String
 ) {
     var text by remember {
-        textFieldState
+        mutableStateOf(textFieldState)
     }
     TextField(
         value = text,
@@ -38,6 +39,7 @@ fun textField(
                 Color.Black,
                 RoundedCornerShape(10.dp),
             )
+            .heightIn(min= 50.dp)
             .padding(start = 10.dp, top = 5.dp, end = 10.dp, bottom = 5.dp),
         shape = RoundedCornerShape(10.dp),
         colors = TextFieldDefaults.colors(
@@ -61,14 +63,14 @@ fun textField(
 
 @Composable
 fun textFieldWithIcon(
-    textFieldState: MutableState<String>,
+    textFieldState: String,
     textfieldLabel: String,
     icons: List<Int>,
     showIcon: Boolean,
     onClickIcon: () -> Unit
 ) {
     var text by remember {
-        textFieldState
+        mutableStateOf(textFieldState)
     }
     val icos = icons
     TextField(
@@ -82,7 +84,8 @@ fun textFieldWithIcon(
                 Color.Black,
                 RoundedCornerShape(10.dp),
             )
-            .padding(start = 10.dp, top = 5.dp, end = 10.dp, bottom = 5.dp),
+            .padding(start = 10.dp, top = 5.dp, end = 10.dp, bottom = 5.dp)
+            .heightIn(min= 50.dp),
         shape = RoundedCornerShape(10.dp),
         colors = TextFieldDefaults.colors(
             cursorColor = Color.Magenta,
