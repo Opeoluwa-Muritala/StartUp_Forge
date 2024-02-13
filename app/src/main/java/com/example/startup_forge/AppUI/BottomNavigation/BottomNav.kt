@@ -26,19 +26,21 @@ fun BottomMenu(navController: NavController){
         mutableIntStateOf(2)
     }
 
+
     NavigationBar(
         containerColor = Color.White,
         contentColor = Color.Transparent
     ) {
         BottomNavItems().forEachIndexed { index, bottomNavItem ->
+            var selected = index == selectedItemIndex
             NavigationBarItem(
-                selected = index == selectedItemIndex,
+                selected = selected,
                 label = {
                     Text(bottomNavItem.title, fontSize = 9.sp)
                 },
                 icon = {
                     Icon(
-                        painter = painterResource(bottomNavItem.iconId),
+                        painter = painterResource(if (!selected) bottomNavItem.iconId else bottomNavItem.selectedIcon),
                         contentDescription = bottomNavItem.title,
                         modifier = Modifier.size(30.dp)
                     )
@@ -55,7 +57,7 @@ fun BottomMenu(navController: NavController){
                     selectedTextColor= ThemeOrange,
                     unselectedIconColor= Color.DarkGray,
                     unselectedTextColor= TextBlack,
-                    indicatorColor = Color.Transparent
+                    indicatorColor = Color.White
                 )
             )
 

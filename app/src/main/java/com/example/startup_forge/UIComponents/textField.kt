@@ -39,7 +39,7 @@ fun textField(
                 Color.Black,
                 RoundedCornerShape(10.dp),
             )
-            .heightIn(min= 50.dp)
+            .heightIn(min= 40.dp, max = 50.dp)
             .padding(start = 10.dp, top = 5.dp, end = 10.dp, bottom = 5.dp),
         shape = RoundedCornerShape(10.dp),
         colors = TextFieldDefaults.colors(
@@ -85,7 +85,7 @@ fun textFieldWithIcon(
                 RoundedCornerShape(10.dp),
             )
             .padding(start = 10.dp, top = 5.dp, end = 10.dp, bottom = 5.dp)
-            .heightIn(min= 50.dp),
+            .heightIn(min= 40.dp, max = 50.dp),
         shape = RoundedCornerShape(10.dp),
         colors = TextFieldDefaults.colors(
             cursorColor = Color.Magenta,

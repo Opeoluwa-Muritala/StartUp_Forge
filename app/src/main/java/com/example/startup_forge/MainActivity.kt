@@ -28,7 +28,6 @@ import com.example.startup_forge.AppUI.Community.Community
 import com.example.startup_forge.AppUI.SignInUI.BussinessInfo
 import com.example.startup_forge.AppUI.SignInUI.SignInUI
 import com.example.startup_forge.AppUI.SignInUI.SignUpUI
-import com.example.startup_forge.ViewModels.NavigationState
 import com.example.startup_forge.ui.theme.StartUp_ForgeTheme
 
 class MainActivity : ComponentActivity() {
@@ -41,8 +40,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainNavigation(rememberNavController())
-                    //Home(navController = rememberNavController())
+                    //MainNavigation(rememberNavController())
+                    Home()
                 }
             }
         }
@@ -85,9 +84,9 @@ fun Home( ){
 }
 @Composable
 fun MainNavigation(navController: NavHostController) {
-    val currentscreen = remember { NavigationState() }
+    val currentscreen by remember { mutableStateOf(MainRoute.SignUp.route) }
 
-    NavHost(navController = navController, startDestination = currentscreen.currentDirectory){
+    NavHost(navController = navController, startDestination = currentscreen){
         composable(MainRoute.SignUp.route,
         ){
             SignUpUI(navController)

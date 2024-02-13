@@ -52,9 +52,7 @@ fun BussinessInfo(navController:NavController) {
     ) {
 
         Column(
-            modifier = Modifier
-                .width(327.dp)
-                .height(570.dp),
+            modifier = Modifier,
             verticalArrangement = Arrangement.spacedBy(40.dp, Alignment.Top),
             horizontalAlignment = Alignment.Start,
         ) {
@@ -72,7 +70,7 @@ fun BussinessInfo(navController:NavController) {
             FadingButton(
                 buttonState = ButtonState(
                     "Sign In",
-                    textfield.myData != "",
+                    textfield.myData != " ",
                 )
             ) {
                 loading = true

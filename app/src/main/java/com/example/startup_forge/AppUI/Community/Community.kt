@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -32,12 +33,14 @@ fun Community() {
         horizontalAlignment = Alignment.Start
     ) {
         Box(modifier = Modifier
+            .background(Color.White)
+            .padding(top = 10.dp)
             .fillMaxHeight()
             .width(100.dp)
             .background(Color.White)){
             Column(
                 Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceBetween,
+                verticalArrangement = Arrangement.spacedBy(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box(modifier = Modifier
@@ -55,7 +58,8 @@ fun Community() {
                     Icon(
                         imageVector = Icons.Outlined.Add,
                         contentDescription = "Addition",
-                        modifier = Modifier.size(50.dp)
+                        modifier = Modifier.size(20.dp).align(Alignment.Center),
+                        tint = Color.Black
                     )
                 }
             }
