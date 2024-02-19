@@ -125,6 +125,8 @@ fun CreateProfile(
             )
             SelectionBox(label = "E.g: Branding, Marketing")
             Button(
+
+
                 onClick = { /*TODO*/ },
                 shape = RoundedCornerShape(20.dp),
                 colors = ButtonDefaults.buttonColors(
@@ -139,7 +141,7 @@ fun CreateProfile(
                 Icon(imageVector = Icons.Outlined.Add, contentDescription = "Add Other Expertise")
                 Text("Add Other Expertise", color = TextBlack, fontSize = 15.sp)
             }
-        }
+      }
 
         //Skills
         Column {
