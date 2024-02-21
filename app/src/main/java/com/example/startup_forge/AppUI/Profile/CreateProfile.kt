@@ -26,7 +26,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,7 +50,7 @@ fun CreateProfile(
 
 ) {
 
-    val viewModel = remember{TextFieldViewModel()}
+    var viewModel by remember{ mutableStateOf("") }
 
     Column(
         Modifier
@@ -107,7 +110,7 @@ fun CreateProfile(
                 fontSize = 15.sp,
                 color = TextBlack
             )
-            textField(textFieldState = viewModel.myData, textfieldLabel = "Linkedin.com/in/...")
+            textField(textFieldState = viewModel, textfieldLabel = "Linkedin.com/in/...", {viewModel = it})
             Text(
                 text = "Linkedin url is required",
                 fontWeight = Normal,

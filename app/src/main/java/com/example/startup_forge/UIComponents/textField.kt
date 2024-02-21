@@ -18,28 +18,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun textField(
     textFieldState: String,
-    textfieldLabel: String
+    textfieldLabel: String,
+    valueChange: (String) -> Unit
 ) {
-    var text by remember {
-        mutableStateOf(textFieldState)
-    }
+
     TextField(
-        value = text,
-        onValueChange = {
-            text = it
-        },
+        value = textFieldState,
+        onValueChange = valueChange
+        ,
         Modifier
             .border(
                 1.dp,
                 Color.Black,
                 RoundedCornerShape(10.dp),
             )
-            .heightIn(min= 40.dp, max = 50.dp)
             .padding(start = 10.dp, top = 5.dp, end = 10.dp, bottom = 5.dp),
         shape = RoundedCornerShape(10.dp),
         colors = TextFieldDefaults.colors(
@@ -67,25 +65,21 @@ fun textFieldWithIcon(
     textfieldLabel: String,
     icons: List<Int>,
     showIcon: Boolean,
-    onClickIcon: () -> Unit
+    onClickIcon: () -> Unit,
+    valueChange: (String) -> Unit
 ) {
-    var text by remember {
-        mutableStateOf(textFieldState)
-    }
+
     val icos = icons
     TextField(
-        value = text,
-        onValueChange = {
-            text = it
-        },
-        Modifier
+        value = textFieldState,
+        onValueChange = valueChange,
+        modifier = Modifier
             .border(
                 1.dp,
                 Color.Black,
                 RoundedCornerShape(10.dp),
             )
-            .padding(start = 10.dp, top = 5.dp, end = 10.dp, bottom = 5.dp)
-            .heightIn(min= 40.dp, max = 50.dp),
+            .padding(start = 10.dp, top = 5.dp, end = 10.dp, bottom = 5.dp),
         shape = RoundedCornerShape(10.dp),
         colors = TextFieldDefaults.colors(
             cursorColor = Color.Magenta,
