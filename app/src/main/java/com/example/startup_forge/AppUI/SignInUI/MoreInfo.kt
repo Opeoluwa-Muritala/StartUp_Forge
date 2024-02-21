@@ -57,10 +57,16 @@ fun BussinessInfo(navController:NavController) {
             horizontalAlignment = Alignment.Start,
         ) {
             HeaderText(text = "Let's Know You!")
-            textField(textFieldState = textfield.myData, textfieldLabel = "Bussiness Name", {})
-            textField(textFieldState = textfield.myData, textfieldLabel = "Industry", {})
-            textField(textFieldState = textfield.myData, textfieldLabel = "About", {})
-            textField(textFieldState = textfield.myData, textfieldLabel = "Location", {})
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(40.dp, Alignment.Top),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                textField(textFieldState = textfield.myData, textfieldLabel = "Bussiness Name", {})
+                textField(textFieldState = textfield.myData, textfieldLabel = "Industry", {})
+                textField(textFieldState = textfield.myData, textfieldLabel = "About", {})
+                textField(textFieldState = textfield.myData, textfieldLabel = "Location", {})
+            }
 
         Row(
             horizontalArrangement = Arrangement.Center,

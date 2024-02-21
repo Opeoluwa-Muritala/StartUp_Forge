@@ -115,70 +115,70 @@ fun SignUpUI(navController: NavController, ) {
                         .width(260.dp)
                         .height(IntrinsicSize.Max),
                     horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                FadingButton(
+                    buttonState = ButtonState(
+                        "Sign Up",
+                        email != "" && password != "" && confirm_password != "",
+                    )
                 ) {
-                    if (password != "" && confirm_password != "") {
-                        FadingButton(
-                            buttonState = ButtonState(
-                                "Sign Up",
-                                email != "",
+
+                        if (confirm_password == password) {
+                            val call = ApiClient.apiService.signup(
+                                Register(email, true, false, false, password)
                             )
-                        ) {
+                            call!!.enqueue(object : Callback<Register?> {
 
-                                if (confirm_password == password) {
-                                    val call = ApiClient.apiService.signup(
-                                        Register(email, true, false, false, password)
-                                    )
-                                    call!!.enqueue(object : Callback<Register?> {
-
-                                        override fun onResponse(
-                                            call: Call<Register?>?,
-                                            response: Response<Register?>
-                                        ) {
-                                            if (response.isSuccessful) {
-                                                Toast.makeText(
-                                                    context,
-                                                    "Data posted to API ${response.toString()}",
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                            }else{
-                                                Toast.makeText(
-                                                    context,
-                                                    "Data not posted to API ${response.toString()}",
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                                Log.d("response", "$response")
-                                            }
-                                        }
-
-                                        override fun onFailure(
-                                            call: Call<Register?>?,
-                                            t: Throwable
-                                        ) {
-                                            // we get error response from API.
-                                            Toast.makeText(
-                                                context,
-                                                "Error found is : " + t.message,
-                                                Toast.LENGTH_LONG
-                                            ).show()
-                                        }
+                                override fun onResponse(
+                                    call: Call<Register?>?,
+                                    response: Response<Register?>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        Toast.makeText(
+                                            context,
+                                            "Data posted to API ${response.toString()}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }else{
+                                        Toast.makeText(
+                                            context,
+                                            "Data not posted to API ${response.toString()}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        Log.d("response", "$response")
                                     }
-                                    )
-                                } else {
+                                }
+
+                                override fun onFailure(
+                                    call: Call<Register?>?,
+                                    t: Throwable
+                                ) {
+                                    // we get error response from API.
                                     Toast.makeText(
                                         context,
-                                        "Fill in ALl The Textfields",
+                                        "Error found is : " + t.message,
                                         Toast.LENGTH_LONG
                                     ).show()
                                 }
                             }
-
-
-                        }
-                        OtherOption(text = "Sign in") {
+                            )
                             navController.navigate(MainRoute.SignIn.route)
+                        } else {
+                            Toast.makeText(
+                                context,
+                                "Ensure Password and confirm password are equal",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                     }
+
+                    OtherOption(text = "Sign in") {
+                        navController.navigate(MainRoute.SignIn.route)
+                    }
                 }
+
+            }
         }
     }
 }

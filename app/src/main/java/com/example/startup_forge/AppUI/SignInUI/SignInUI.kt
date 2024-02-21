@@ -89,7 +89,7 @@ fun SignInUI(navController: NavController) {
                 verticalArrangement = Arrangement.spacedBy(15.dp, Alignment.Top),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                textField(textFieldState =email , textfieldLabel = "Email", {email = it})
+                textField(textFieldState =email , textfieldLabel = "Email") { email = it }
 
                 textFieldWithIcon(
                     textFieldState = password, textfieldLabel = "Password", icons = listOf(
@@ -129,8 +129,6 @@ fun SignInUI(navController: NavController) {
                     } else {
                         LaunchedEffect(key1 = loading, ){
                             delay(3000)
-                            navController.navigate(MainRoute.BussinesInfo.route)
-
                             if (email != "" && password != "") {
                                 val call = ApiClient.apiService.login(
                                     User(
@@ -150,6 +148,7 @@ fun SignInUI(navController: NavController) {
                                                 "Data posted to API ${response.toString()}",
                                                 Toast.LENGTH_SHORT
                                             ).show()
+                                            navController.navigate(MainRoute.BussinesInfo.route)
                                         }else{
                                             Toast.makeText(
                                                 context,
@@ -173,6 +172,7 @@ fun SignInUI(navController: NavController) {
                                     }
                                 }
                                 )
+                                navController.navigate(MainRoute.BussinesInfo.route)
                             }
                         }
                         CircularProgressIndicator(
