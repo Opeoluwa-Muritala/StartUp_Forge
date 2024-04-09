@@ -34,8 +34,7 @@ fun SelectionBox(
             unfocusedContainerColor = Color.Transparent
         ),
         trailingIcon = {
-            Icon(imageVector = Icons.Outlined.KeyboardArrowDown, contentDescription = "SelectIte")
+            Icon(imageVector = Icons.Outlined.KeyboardArrowDown, contentDescription = "Select Items")
         },
-        modifier = modifier
     )
 }

@@ -2,7 +2,6 @@ package com.example.startup_forge.UIComponents
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,18 +10,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.startup_forge.R
 
 @Composable
-fun textField(
+fun AppField(
     textFieldState: String,
     textfieldLabel: String,
     valueChange: (String) -> Unit
@@ -60,16 +57,17 @@ fun textField(
 }
 
 @Composable
-fun textFieldWithIcon(
+fun AppFieldWithIcon(
     textFieldState: String,
     textfieldLabel: String,
-    icons: List<Int>,
     showIcon: Boolean,
     onClickIcon: () -> Unit,
     valueChange: (String) -> Unit
 ) {
-
-    val icos = icons
+    val icons = listOf(
+        R.drawable.eyeopened,
+        R.drawable.eyeclosed
+    )
     TextField(
         value = textFieldState,
         onValueChange = valueChange,
@@ -97,10 +95,8 @@ fun textFieldWithIcon(
             Text(text = textfieldLabel)
         },
         trailingIcon = {
-
-
                 Icon(
-                    painter = painterResource(id = if (showIcon) icos[1] else icos[0]),
+                    painter = painterResource(id = if (showIcon) icons[1] else icons[0]),
                     "show",
                     modifier = Modifier.clickable {
                         onClickIcon()}.size(20.dp),
@@ -108,6 +104,6 @@ fun textFieldWithIcon(
                 )
 
         },
-
+        visualTransformation = if (showIcon) VisualTransformation.None else PasswordVisualTransformation()
     )
 }

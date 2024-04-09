@@ -1,4 +1,4 @@
-package com.example.startup_forge
+package com.example.startup_forge.Navigation
 
 sealed class MainRoute(val route: String){
     object SignUp : MainRoute("sign_up")

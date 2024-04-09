@@ -1,7 +1,7 @@
 package com.example.startup_forge.AppUI.BottomNavigation
 
 import androidx.annotation.DrawableRes
-import com.example.startup_forge.AppRoute
+import com.example.startup_forge.Navigation.AppRoute
 import com.example.startup_forge.R
 
 data class BottomNavItem(
@@ -12,9 +12,10 @@ data class BottomNavItem(
 )
     fun BottomNavItems(): List<BottomNavItem>{
         return listOf(
-            BottomNavItem("Home", R.drawable.home,R.drawable.selectedhome ,AppRoute.Home.route),
-            BottomNavItem("Mentor", R.drawable.mentor,R.drawable.selectedmentor ,AppRoute.Mentor.route),
-            BottomNavItem("Community", R.drawable.community ,R.drawable.selectedcommunity ,AppRoute.Community.route),
+            BottomNavItem("Home", R.drawable.home,R.drawable.selectedhome , AppRoute.Home.route),
+            BottomNavItem("Mentor", R.drawable.mentor,R.drawable.selectedmentor , AppRoute.Mentor.route),
+            BottomNavItem("Community", R.drawable.community ,R.drawable.selectedcommunity ,
+                AppRoute.Community.route),
             BottomNavItem("Booking", R.drawable.booking,R.drawable.selectedbooking, AppRoute.Booking.route),
         )
     }

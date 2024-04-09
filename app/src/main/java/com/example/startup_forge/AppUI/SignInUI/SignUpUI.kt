@@ -19,12 +19,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
-import com.example.startup_forge.API.ApiClient
-import com.example.startup_forge.EndPoints.Register
-import com.example.startup_forge.MainRoute
+import com.example.startup_forge.data.model.Register
+import com.example.startup_forge.data.repository.Repository
+import com.example.startup_forge.data.viewmodel.MainViewModel
+import com.example.startup_forge.data.viewmodel.MainViewModelFactory
+import com.example.startup_forge.Navigation.MainRoute
 import com.example.startup_forge.UIComponents.AgreeToTerms
 import com.example.startup_forge.UIComponents.ButtonState
 import com.example.startup_forge.UIComponents.FadingButton
@@ -32,14 +36,14 @@ import com.example.startup_forge.UIComponents.HeaderText
 import com.example.startup_forge.UIComponents.MiddleSlot
 import com.example.startup_forge.UIComponents.OtherOption
 import com.example.startup_forge.UIComponents.SignWithGoogle
-import com.example.startup_forge.UIComponents.textField
-import com.example.startup_forge.UIComponents.textFieldWithIcon
-import com.example.startup_forge.R
-import com.example.startup_forge.ViewModels.PasswordIconViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.startup_forge.UIComponents.AppField
+import com.example.startup_forge.UIComponents.AppFieldWithIcon
+import retrofit2.HttpException
+import java.io.IOException
+import java.lang.RuntimeException
+import java.net.SocketTimeoutException
 
+private lateinit var viewModel: MainViewModel
 @Composable
 fun SignUpUI(navController: NavController, ) {
     var email by remember {
@@ -51,13 +55,21 @@ fun SignUpUI(navController: NavController, ) {
     var confirm_password by remember {
         mutableStateOf("")
     }
-    var showIcon = remember {
-        PasswordIconViewModel().myData
+    var showIcon by remember {
+        mutableStateOf(false)
+    }
+    var showIcon2 by remember {
+        mutableStateOf(false)
     }
     var loading by remember {
         mutableStateOf(false)
     }
     val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val repository = Repository()
+    val viewModelFactory = MainViewModelFactory(repository)
+    viewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = viewModelFactory)
+
 
 
     Column(
@@ -81,103 +93,80 @@ fun SignUpUI(navController: NavController, ) {
                 verticalArrangement = Arrangement.spacedBy(15.dp, Alignment.Top),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                textField(textFieldState = email, textfieldLabel = "Email") { email = it }
-                textFieldWithIcon(
-                    textFieldState = password, textfieldLabel = "Password", icons = listOf(
-                        R.drawable.eyeopened,
-                        R.drawable.eyeclosed
-                    ), showIcon = showIcon,
-                    valueChange = {password = it},
-                    onClickIcon = {{
+                AppField(textFieldState = email, textfieldLabel = "Email") { email = it }
+                AppFieldWithIcon(
+                    textFieldState = password, "Password", showIcon = showIcon, onClickIcon = {
                         showIcon = !showIcon
-                    }}
-                )
-                textFieldWithIcon(
-                    textFieldState = confirm_password, textfieldLabel = "Confirm Password", icons = listOf(
-                        R.drawable.eyeopened,
-                        R.drawable.eyeclosed
-                    ), showIcon = showIcon,
-                    valueChange = {confirm_password = it},
-                    onClickIcon = {{
-                        showIcon = !showIcon
-                    }}
-                )
+                    }
+                ) { password = it }
+                AppFieldWithIcon(
+                    textFieldState = confirm_password,
+                    "Confirm Password",
+                    showIcon = showIcon2,
+                    onClickIcon = {
+                       showIcon2 = !showIcon2
+                    }
+                ) { confirm_password = it }
                 AgreeToTerms()
                 MiddleSlot()
 
-                    SignWithGoogle(
-                        SignInClick = {
-                            navController.navigate(MainRoute.BussinesInfo.route)
-                        },
-                    )
+
                 Column(
                     modifier = Modifier
                         .width(260.dp)
                         .height(IntrinsicSize.Max),
                     horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-                FadingButton(
-                    buttonState = ButtonState(
-                        "Sign Up",
-                        email != "" && password != "" && confirm_password != "",
-                    )
                 ) {
 
-                        if (confirm_password == password) {
-                            val call = ApiClient.apiService.signup(
-                                Register(email, true, false, false, password)
-                            )
-                            call!!.enqueue(object : Callback<Register?> {
-
-                                override fun onResponse(
-                                    call: Call<Register?>?,
-                                    response: Response<Register?>
-                                ) {
+                    FadingButton(
+                        buttonState = ButtonState(
+                            "Sign Up",
+                            email != "" && password != "" && confirm_password != "",
+                        )
+                    ) {
+                        loading = true
+                        if (password == confirm_password) {
+                            try {
+                                viewModel.register(Register(email, password))
+                                viewModel.registerResponse.observe(
+                                    lifecycleOwner
+                                ) { response ->
                                     if (response.isSuccessful) {
+                                        Log.d("Main", response.body().toString())
+                                        Log.d("Main", response.code().toString())
+                                        Log.d("Main", response.message())
+                                    } else {
                                         Toast.makeText(
                                             context,
-                                            "Data posted to API ${response.toString()}",
-                                            Toast.LENGTH_SHORT
+                                            response.code(),
+                                            Toast.LENGTH_LONG
                                         ).show()
-                                    }else{
-                                        Toast.makeText(
-                                            context,
-                                            "Data not posted to API ${response.toString()}",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                        Log.d("response", "$response")
                                     }
                                 }
-
-                                override fun onFailure(
-                                    call: Call<Register?>?,
-                                    t: Throwable
-                                ) {
-                                    // we get error response from API.
-                                    Toast.makeText(
-                                        context,
-                                        "Error found is : " + t.message,
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
+                            } catch (e: IOException) {
+                                Log.e("IOException", "Internet not available")
+                            } catch (e: HttpException) {
+                                Log.e("HttpException", "HttpException ${e.code()}")
+                            } catch (e: RuntimeException) {
+                                Log.e("RuntimeException", "Runtime Exception")
+                            }catch (e: SocketTimeoutException) {
+                                Log.e("RuntimeException", "Socket")
                             }
-                            )
                             navController.navigate(MainRoute.SignIn.route)
                         } else {
                             Toast.makeText(
                                 context,
-                                "Ensure Password and confirm password are equal",
+                                "Password and Confirm Password are not the same",
                                 Toast.LENGTH_LONG
                             ).show()
                         }
                     }
 
-                    OtherOption(text = "Sign in") {
-                        navController.navigate(MainRoute.SignIn.route)
-                    }
-                }
 
+                        OtherOption(text = "Sign in") {
+                            navController.navigate(MainRoute.SignIn.route)
+                        }
+                }
             }
         }
     }
