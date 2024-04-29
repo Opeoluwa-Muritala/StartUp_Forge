@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.startup_forge.data.model.Register
 import com.example.startup_forge.data.model.User
 import com.example.startup_forge.data.repository.Repository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -14,13 +15,13 @@ class MainViewModel(private val repository: Repository): ViewModel() {
     var loginResponse: MutableLiveData<Response<User>> = MutableLiveData()
 
     fun register(register: Register){
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val response = repository.register(register)
             registerResponse.value = response
         }
     }
     fun login(user: User){
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val response = repository.login(user)
             loginResponse.value = response
         }

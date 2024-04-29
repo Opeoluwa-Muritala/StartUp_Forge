@@ -32,7 +32,7 @@ import com.example.startup_forge.ui.theme.ThemeOrange
 @Composable
 fun AgreeToTerms() {
     var check by remember {
-        mutableStateOf(true)
+        mutableStateOf(false)
     }
     Row(
         verticalAlignment = Alignment.CenterVertically

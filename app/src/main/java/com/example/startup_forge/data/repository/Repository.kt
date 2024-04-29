@@ -9,6 +9,7 @@ class Repository {
     suspend fun register(register: Register): Response<Register> {
         return RetrofitInstance.api.register(register)
     }
+
     suspend fun login(user: User): Response<User> {
         return RetrofitInstance.api.login(
             user.client_id,

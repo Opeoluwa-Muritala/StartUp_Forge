@@ -1,6 +1,7 @@
 package com.example.startup_forge.AppUI.CreateProfile.Component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,7 +26,9 @@ fun UploadImage(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White),
+            .background(Color.White)
+            .clickable { click() }
+        ,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(30.dp)
     ) {

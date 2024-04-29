@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -20,14 +21,13 @@ import com.example.startup_forge.R
 
 @Composable
 fun AppField(
-    textFieldState: String,
+    textFieldState: MutableState<String>,
     textfieldLabel: String,
-    valueChange: (String) -> Unit
 ) {
 
     TextField(
-        value = textFieldState,
-        onValueChange = valueChange
+        value = textFieldState.value,
+        onValueChange = {textFieldState.value = it}
         ,
         Modifier
             .border(
@@ -58,19 +58,18 @@ fun AppField(
 
 @Composable
 fun AppFieldWithIcon(
-    textFieldState: String,
+    textFieldState: MutableState<String>,
     textfieldLabel: String,
     showIcon: Boolean,
     onClickIcon: () -> Unit,
-    valueChange: (String) -> Unit
 ) {
     val icons = listOf(
         R.drawable.eyeopened,
         R.drawable.eyeclosed
     )
     TextField(
-        value = textFieldState,
-        onValueChange = valueChange,
+        value = textFieldState.value,
+        onValueChange = {textFieldState.value = it  },
         modifier = Modifier
             .border(
                 1.dp,
@@ -98,8 +97,11 @@ fun AppFieldWithIcon(
                 Icon(
                     painter = painterResource(id = if (showIcon) icons[1] else icons[0]),
                     "show",
-                    modifier = Modifier.clickable {
-                        onClickIcon()}.size(20.dp),
+                    modifier = Modifier
+                        .clickable {
+                            onClickIcon()
+                        }
+                        .size(20.dp),
                     tint = Color.Black
                 )
 

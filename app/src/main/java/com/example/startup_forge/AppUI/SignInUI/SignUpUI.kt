@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,37 +23,37 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
-import com.example.startup_forge.data.model.Register
-import com.example.startup_forge.data.repository.Repository
-import com.example.startup_forge.data.viewmodel.MainViewModel
-import com.example.startup_forge.data.viewmodel.MainViewModelFactory
 import com.example.startup_forge.Navigation.MainRoute
 import com.example.startup_forge.UIComponents.AgreeToTerms
+import com.example.startup_forge.UIComponents.AppField
+import com.example.startup_forge.UIComponents.AppFieldWithIcon
 import com.example.startup_forge.UIComponents.ButtonState
 import com.example.startup_forge.UIComponents.FadingButton
 import com.example.startup_forge.UIComponents.HeaderText
 import com.example.startup_forge.UIComponents.MiddleSlot
 import com.example.startup_forge.UIComponents.OtherOption
-import com.example.startup_forge.UIComponents.SignWithGoogle
-import com.example.startup_forge.UIComponents.AppField
-import com.example.startup_forge.UIComponents.AppFieldWithIcon
+import com.example.startup_forge.data.model.Register
+import com.example.startup_forge.data.repository.Repository
+import com.example.startup_forge.data.viewmodel.MainViewModel
+import com.example.startup_forge.data.viewmodel.MainViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
-import java.lang.RuntimeException
 import java.net.SocketTimeoutException
 
 private lateinit var viewModel: MainViewModel
 @Composable
 fun SignUpUI(navController: NavController, ) {
-    var email by remember {
+    var email = remember {
         mutableStateOf("")
     }
-    var password by remember {
+    var password = remember {
         mutableStateOf("")
     }
-    var confirm_password by remember {
+    var confirm_password = remember {
         mutableStateOf("")
     }
     var showIcon by remember {
@@ -65,10 +66,10 @@ fun SignUpUI(navController: NavController, ) {
         mutableStateOf(false)
     }
     val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
     val repository = Repository()
     val viewModelFactory = MainViewModelFactory(repository)
     viewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = viewModelFactory)
+    val response = viewModel.registerResponse.value
 
 
 
@@ -93,12 +94,12 @@ fun SignUpUI(navController: NavController, ) {
                 verticalArrangement = Arrangement.spacedBy(15.dp, Alignment.Top),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                AppField(textFieldState = email, textfieldLabel = "Email") { email = it }
+                AppField(textFieldState = email, textfieldLabel = "Email")
                 AppFieldWithIcon(
                     textFieldState = password, "Password", showIcon = showIcon, onClickIcon = {
                         showIcon = !showIcon
                     }
-                ) { password = it }
+                )
                 AppFieldWithIcon(
                     textFieldState = confirm_password,
                     "Confirm Password",
@@ -106,7 +107,7 @@ fun SignUpUI(navController: NavController, ) {
                     onClickIcon = {
                        showIcon2 = !showIcon2
                     }
-                ) { confirm_password = it }
+                )
                 AgreeToTerms()
                 MiddleSlot()
 
@@ -121,38 +122,40 @@ fun SignUpUI(navController: NavController, ) {
                     FadingButton(
                         buttonState = ButtonState(
                             "Sign Up",
-                            email != "" && password != "" && confirm_password != "",
+                            email.value != "" && password.value != "" && confirm_password.value != "",
                         )
                     ) {
                         loading = true
-                        if (password == confirm_password) {
+                        if (password.value == confirm_password.value) {
                             try {
-                                viewModel.register(Register(email, password))
-                                viewModel.registerResponse.observe(
-                                    lifecycleOwner
-                                ) { response ->
-                                    if (response.isSuccessful) {
-                                        Log.d("Main", response.body().toString())
-                                        Log.d("Main", response.code().toString())
-                                        Log.d("Main", response.message())
-                                    } else {
-                                        Toast.makeText(
-                                            context,
-                                            response.code(),
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    }
-                                }
+                                viewModel.register(Register(email.value, password.value))
                             } catch (e: IOException) {
-                                Log.e("IOException", "Internet not available")
+                                Log.e("SignUp", "Internet not available")
                             } catch (e: HttpException) {
-                                Log.e("HttpException", "HttpException ${e.code()}")
-                            } catch (e: RuntimeException) {
-                                Log.e("RuntimeException", "Runtime Exception")
-                            }catch (e: SocketTimeoutException) {
-                                Log.e("RuntimeException", "Socket")
+                                Log.e("SignUp", "HttpException ${e.code()}")
                             }
-                            navController.navigate(MainRoute.SignIn.route)
+                            if(response?.isSuccessful == true){
+                                Toast.makeText(
+                                    context,
+                                    "Code: ${response.code()}" +
+                                            "Message : ${response.message()}" +
+                                            "Data: ${response.body()}"
+                                    ,
+                                    Toast.LENGTH_LONG
+                                    ).show()
+                                navController.navigate(MainRoute.SignIn.route)
+                            }else {
+                                if (response != null) {
+                                    Toast.makeText(
+                                        context,
+                                        "Code: ${response.code()}" +
+                                                "Message : ${response.message()}" +
+                                                "Data: ${response.body()}",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                                navController.navigate(MainRoute.SignUp.route)
+                            }
                         } else {
                             Toast.makeText(
                                 context,

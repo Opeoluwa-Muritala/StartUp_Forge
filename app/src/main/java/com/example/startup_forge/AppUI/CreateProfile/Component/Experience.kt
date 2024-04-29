@@ -1,7 +1,6 @@
 package com.example.startup_forge.AppUI.CreateProfile.Component
 
 import android.os.Build
-import android.util.MonthDisplayHelper
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,7 +15,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.startup_forge.UIComponents.DropDownTextField
-import java.time.Month
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

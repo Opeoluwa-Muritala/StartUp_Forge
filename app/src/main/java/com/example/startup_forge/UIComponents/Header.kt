@@ -13,7 +13,6 @@ fun HeaderText(
 ) {
     Text(
         text = text,
-// Header Text
         style = TextStyle(
             fontSize = 24.sp,
             fontWeight = FontWeight(700),
