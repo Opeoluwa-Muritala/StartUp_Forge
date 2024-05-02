@@ -1,7 +1,6 @@
 package com.example.startup_forge.AppUI.SignInUI
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,13 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -37,23 +33,18 @@ import com.example.startup_forge.data.model.Register
 import com.example.startup_forge.data.repository.Repository
 import com.example.startup_forge.data.viewmodel.MainViewModel
 import com.example.startup_forge.data.viewmodel.MainViewModelFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.HttpException
-import java.io.IOException
-import java.net.SocketTimeoutException
+
 
 private lateinit var viewModel: MainViewModel
 @Composable
-fun SignUpUI(navController: NavController, ) {
-    var email = remember {
+fun SignUpUI(navController: NavController) {
+    val email = remember {
         mutableStateOf("")
     }
-    var password = remember {
+    val password = remember {
         mutableStateOf("")
     }
-    var confirm_password = remember {
+    val confirm_password = remember {
         mutableStateOf("")
     }
     var showIcon by remember {
@@ -65,11 +56,11 @@ fun SignUpUI(navController: NavController, ) {
     var loading by remember {
         mutableStateOf(false)
     }
-    val context = LocalContext.current
+
     val repository = Repository()
     val viewModelFactory = MainViewModelFactory(repository)
     viewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = viewModelFactory)
-    val response = viewModel.registerResponse.value
+
 
 
 
@@ -126,43 +117,13 @@ fun SignUpUI(navController: NavController, ) {
                         )
                     ) {
                         loading = true
-                        if (password.value == confirm_password.value) {
-                            try {
-                                viewModel.register(Register(email.value, password.value))
-                            } catch (e: IOException) {
-                                Log.e("SignUp", "Internet not available")
-                            } catch (e: HttpException) {
-                                Log.e("SignUp", "HttpException ${e.code()}")
-                            }
-                            if(response?.isSuccessful == true){
-                                Toast.makeText(
-                                    context,
-                                    "Code: ${response.code()}" +
-                                            "Message : ${response.message()}" +
-                                            "Data: ${response.body()}"
-                                    ,
-                                    Toast.LENGTH_LONG
-                                    ).show()
-                                navController.navigate(MainRoute.SignIn.route)
-                            }else {
-                                if (response != null) {
-                                    Toast.makeText(
-                                        context,
-                                        "Code: ${response.code()}" +
-                                                "Message : ${response.message()}" +
-                                                "Data: ${response.body()}",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                                navController.navigate(MainRoute.SignUp.route)
-                            }
-                        } else {
-                            Toast.makeText(
-                                context,
-                                "Password and Confirm Password are not the same",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
+                        viewModel.register(
+                            Register(
+                            email = email.value,
+                            password = password.value
+                        )
+                        )
+                        Log.d("Register", viewModel.registerResponse.toString())
                     }
 
 

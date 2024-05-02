@@ -32,7 +32,7 @@ fun BottomMenu(navController: NavController){
         contentColor = Color.Transparent
     ) {
         BottomNavItems().forEachIndexed { index, bottomNavItem ->
-            var selected = index == selectedItemIndex
+            val selected = index == selectedItemIndex
             NavigationBarItem(
                 selected = selected,
                 label = {

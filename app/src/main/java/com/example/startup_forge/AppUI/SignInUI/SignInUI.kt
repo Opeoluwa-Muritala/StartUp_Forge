@@ -1,7 +1,6 @@
 package com.example.startup_forge.AppUI.SignInUI
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,35 +14,28 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.startup_forge.data.model.User
-import com.example.startup_forge.data.repository.Repository
-import com.example.startup_forge.data.viewmodel.MainViewModel
-import com.example.startup_forge.data.viewmodel.MainViewModelFactory
 import com.example.startup_forge.Navigation.MainRoute
+import com.example.startup_forge.UIComponents.AppField
+import com.example.startup_forge.UIComponents.AppFieldWithIcon
 import com.example.startup_forge.UIComponents.ButtonState
 import com.example.startup_forge.UIComponents.FadingButton
 import com.example.startup_forge.UIComponents.ForgotAndRememberPassword
 import com.example.startup_forge.UIComponents.HeaderText
 import com.example.startup_forge.UIComponents.MiddleSlot
 import com.example.startup_forge.UIComponents.OtherOption
-import com.example.startup_forge.UIComponents.AppField
-import com.example.startup_forge.UIComponents.AppFieldWithIcon
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
-import java.lang.RuntimeException
-import java.net.SocketTimeoutException
+import com.example.startup_forge.data.model.User
+import com.example.startup_forge.data.repository.Repository
+import com.example.startup_forge.data.viewmodel.MainViewModel
+import com.example.startup_forge.data.viewmodel.MainViewModelFactory
+
 
 private lateinit var viewModel: MainViewModel
 data class SignInState(
@@ -57,9 +49,6 @@ fun SignInUI(navController: NavController) {
     var uiState by remember {
         mutableStateOf(SignInState())
     }
-     val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val couroutineScope = rememberCoroutineScope()
     val repository = Repository()
     val viewModelFactory = MainViewModelFactory(repository)
     viewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = viewModelFactory)
@@ -96,7 +85,7 @@ fun SignInUI(navController: NavController) {
 
                 ForgotAndRememberPassword(
                     "Forgot Password?"
-                ){}
+                ) {}
                 MiddleSlot()
 
                 Column(
@@ -105,39 +94,23 @@ fun SignInUI(navController: NavController) {
                         .height(IntrinsicSize.Max),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    if (!uiState.loading) {
-                        FadingButton(
-                            buttonState = ButtonState(
-                                "Sign In",
-                                uiState.password.value != "",
+
+                    FadingButton(
+                        buttonState = ButtonState(
+                            "Sign In",
+                            uiState.password.value != "",
+                        )
+                    ) {
+                        uiState = uiState.copy(loading = true)
+                        viewModel.login(
+                            User(
+                                email = uiState.email.value,
+                                password = uiState.password.value
                             )
-                        ) {
-                            uiState = uiState.copy(loading = true)
-                            try{
-                                    viewModel.login(User(email = uiState.email.value, password = uiState.password.value))
-                                    viewModel.loginResponse.observe(lifecycleOwner) { response ->
-                                        if (response.isSuccessful) {
-                                            Toast.makeText(context, response.body().toString(), Toast.LENGTH_LONG).show()
-                                            Toast.makeText(context, response.code(), Toast.LENGTH_LONG).show()
-                                            Toast.makeText(context, response.message(), Toast.LENGTH_LONG).show()
-                                            navController.navigate(MainRoute.MainApp.route)
-                                        } else {
-                                            Toast.makeText(
-                                                context,
-                                                "${response.code()} + ${response.message()}",
-                                                Toast.LENGTH_LONG
-                                            ).show()
-                                        }
-                                    }
-                                } catch (e: IOException) {
-                                    Log.e("SignIn", "Internet not available")
-                                } catch (e: HttpException) {
-                                    Log.e("SignIn", "HttpException ${e.code()}")
-                                }
-                                Log.println(Log.DEBUG, "Thread",Thread.currentThread().toString() )
-                        }
+                        )
+                        Log.d("Register", viewModel.loginResponse.toString())
                     }
-                    OtherOption(text = "Sign up" , text1 = "Don't have an account?") {
+                    OtherOption(text = "Sign up", text1 = "Don't have an account?") {
                         navController.navigate(MainRoute.SignUp.route)
                     }
                 }

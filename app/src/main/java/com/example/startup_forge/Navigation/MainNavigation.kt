@@ -20,7 +20,7 @@ fun Nav() {
         composable(MainRoute.SignIn.route){
             SignInUI(navController)
         }
-        composable(MainRoute.BussinesInfo.route){
+        composable(MainRoute.BusinesInfo.route){
             BusinessInfo(navController)
         }
         composable(MainRoute.MainApp.route){

@@ -17,11 +17,11 @@ interface StartupApi {
     @FormUrlEncoded
     @POST("auth/jwt/login")
     suspend fun login(
-        @Field("grant_type") grant_type: String? ,
+        @Field("grant_type") grant_type: String ,
         @Field("email") email: String,
         @Field("password") password: String,
-        @Field("scope") scope: String?,
-        @Field("client_id") client_id: String?,
-        @Field("client_secret") client_secret: String?
+        @Field("scope") scope: String,
+        @Field("client_id") client_id: String,
+        @Field("client_secret") client_secret: String
     ): Response<User>
 }
