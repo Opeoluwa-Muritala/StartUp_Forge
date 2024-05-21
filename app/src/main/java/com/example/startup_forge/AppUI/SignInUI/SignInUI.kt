@@ -1,6 +1,7 @@
 package com.example.startup_forge.AppUI.SignInUI
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -52,6 +55,8 @@ fun SignInUI(navController: NavController) {
     val repository = Repository()
     val viewModelFactory = MainViewModelFactory(repository)
     viewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = viewModelFactory)
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
 
 
     Column(
@@ -108,7 +113,15 @@ fun SignInUI(navController: NavController) {
                                 password = uiState.password.value
                             )
                         )
-                        Log.d("Register", viewModel.loginResponse.toString())
+                        viewModel.loginResponse.observe(lifecycleOwner){
+                            Log.d("Register", it.message() + it.code() + it.body())
+                            Toast.makeText(
+                                context,
+                                it.message() + it.code() + it.body(),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+
                     }
                     OtherOption(text = "Sign up", text1 = "Don't have an account?") {
                         navController.navigate(MainRoute.SignUp.route)
