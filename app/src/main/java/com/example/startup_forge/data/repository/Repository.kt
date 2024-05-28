@@ -12,12 +12,12 @@ class Repository {
 
     suspend fun login(user: User): Response<User> {
         return RetrofitInstance.api.login(
-            user.client_id,
+            user.grant_type,
             user.email,
             user.password,
             user.scope,
             user.client_secret,
-            user.grant_type
+            user.client_id,
         )
     }
 }

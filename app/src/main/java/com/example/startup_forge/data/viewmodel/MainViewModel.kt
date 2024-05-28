@@ -22,7 +22,7 @@ class MainViewModel(private val repository: Repository): ViewModel() {
                 if (response.isSuccessful) {
                     registerResponse.value = response
                 } else {
-                    Log.e("API Error", "Error: ${response.code()}")
+                    Log.e("API Error", "Error: ${response.message() + response.code() + response.body()} + ${response.raw()} + ${response.headers()} + ${response.errorBody()}")
                 }
             } catch (e: IOException) {
                 // Handle network error
@@ -42,7 +42,7 @@ class MainViewModel(private val repository: Repository): ViewModel() {
                 if (response.isSuccessful) {
                     loginResponse.value = response
                 } else {
-                    Log.e("API Error", "Error: ${response.code()}")
+                    Log.e("API Error", "Error:  ${response.message() + response.code() + response.body()} + ${response.raw()} + ${response.headers()} + ${response.errorBody()}")
                 }
             } catch (e: IOException) {
                 // Handle network error

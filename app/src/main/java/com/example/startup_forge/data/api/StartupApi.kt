@@ -17,8 +17,8 @@ interface StartupApi {
     @FormUrlEncoded
     @POST("auth/jwt/login")
     suspend fun login(
-        @Field("grant_type") grant_type: String ,
-        @Field("email") email: String,
+        @Field("grant_type") grant_type: String,
+        @Field("username") username: String,
         @Field("password") password: String,
         @Field("scope") scope: String,
         @Field("client_id") client_id: String,
